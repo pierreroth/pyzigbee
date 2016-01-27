@@ -160,6 +160,15 @@ class PyZigBeeShell(cmd.Cmd):
         print(self.gateway.driver.read(to_read=arg))
 
     @handle_exception
+    def do_drv_receive(self, arg):
+        """
+        Receive frame from the network
+
+        Optional arg: number of seconds to block (no arg means infinite)
+        """
+        print(self.gateway.receive(timeout=arg))
+
+    @handle_exception
     def do_drv_write(self, arg):
         """
         Write data to the gateway driver (bypassing protocol encoding)
