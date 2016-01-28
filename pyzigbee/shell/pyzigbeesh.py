@@ -104,10 +104,11 @@ class PyZigBeeShell(cmd.Cmd):
             arg = 5
 
         with closing(self.gateway.open()) as gateway:
-            zigbee_ids = gateway.scan(delay=arg)
+            zigbee_devices = gateway.scan(delay=arg)
 
-        for zigbee_id in zigbee_ids:
-            print(zigbee_id)
+        for zigbee_device in zigbee_devices:
+            print("index: %03d   id: %s" %
+                  (zigbee_device['index'], zigbee_device['zigbee_id']))
 
     @handle_exception
     def do_receive(self, arg):

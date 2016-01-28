@@ -90,7 +90,7 @@ class Gateway(object):
 
     def scan(self, delay=5):
         """
-        Scan the network and return a list of ZigBee IDs
+        Scan the network and return a list of dict (database Index, ZigBee ID)
         """
         self.driver.set_unblocking_mode()
 
@@ -101,7 +101,7 @@ class Gateway(object):
         self.logger.debug("%d device(s) on the network", dev_nb)
 
         # we can now loop over the devices
-        dev_ids = []
+        devices = []
         for i in range(0, dev_nb):
             try:
                 self.logger.debug("getting device ID at index %d...", i)
@@ -109,11 +109,11 @@ class Gateway(object):
                 answer = self._get_answer(sequence)
                 dev_id = self.protocol.decode_dev_id(answer)
                 self.logger.info("device ID at index %d: %s", i, dev_id)
-                dev_ids.append(dev_id)
+                devices.append({"index": i, "zigbee_id": dev_id})
             except PyZigBeeException as error:
                 self.logger.warn("failed to get device ID at index %d (%s)",
                                  i, error)
-        return dev_ids
+        return devices
 
     def receive(self, timeout=None):
         """
