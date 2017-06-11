@@ -104,10 +104,11 @@ class PyZigBeeShell(cmd.Cmd):
             arg = 5
 
         with closing(self.gateway.open()) as gateway:
-            zigbee_ids = gateway.scan(delay=arg)
+            zigbee_devices = gateway.scan(delay=arg)
 
-        for zigbee_id in zigbee_ids:
-            print(zigbee_id)
+        for zigbee_device in zigbee_devices:
+            print("index: %03d   id: %s" %
+                  (zigbee_device['index'], zigbee_device['zigbee_id']))
 
     @handle_exception
     def do_receive(self, arg):
@@ -158,6 +159,15 @@ class PyZigBeeShell(cmd.Cmd):
         Optional arg: number of bytes to read
         """
         print(self.gateway.driver.read(to_read=arg))
+
+    @handle_exception
+    def do_drv_receive(self, arg):
+        """
+        Receive frame from the network
+
+        Optional arg: number of seconds to block (no arg means infinite)
+        """
+        print(self.gateway.receive(timeout=arg))
 
     @handle_exception
     def do_drv_write(self, arg):

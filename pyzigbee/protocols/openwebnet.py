@@ -85,8 +85,9 @@ class OWNProtocol(BaseProtocol):
         Build the frames sequence to get the device ID from
         a given device index
         """
-        return [{"tx": "*#13**66#%d##" % dev_index},
-                {"answer": ""}]
+        return [{"tx": "*#13**73#%d##" % dev_index},
+                {"answer": ""},
+                {"rx": OWN_ACK}, ]
 
     def decode_dev_id(self, data):
         """
